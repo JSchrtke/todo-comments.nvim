@@ -57,7 +57,12 @@ function M.search(cb)
     if not stderr:is_closing() then
       stderr:close()
     end
-    if code ~= 0 then
+    if code == 1 then
+      vim.defer_fn(function()
+        Util.error("no TODO's found")
+      end, 10)
+    end
+    if code == 2 then
       vim.defer_fn(function()
         Util.error(error)
         Util.error("ripgrep failed with code " .. code)
